@@ -5,15 +5,58 @@ import java.sql.Statement;
 import java.sql.DriverManager;
 
 public class Hive2JdbcClient {
-        private static String driverName = "org.apache.hive.jdbc.HiveDriver";
-        static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        static final String DB_URL = "jdbc:mysql://localhost:3306/RUNOOB";
-        static String[] getColumnsRegex()
+	
+		private static String columnsStr;
+		private static String regexStr;
+		private static boolean initFailed = true;
+		
+        static void getColumnsRegex(int id)
         {
-                String[] arrStr = new String[2];
-                arrStr[0] = "columns";
-                arrStr[1] = "regex";
-                return arrStr;
+				final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+				final String DB_URL = "jdbc:mysql://10.9.170.241:3306/ucdn";
+				final String USER = "root";
+				final String PASS = "ucdnred@cat;;";
+				
+				Connection conn = null;
+				Statement stmt = null;
+				try{
+					// 注册 JDBC 驱动
+					Class.forName(JDBC_DRIVER);
+					
+					conn = DriverManager.getConnection(DB_URL, USER, PASS);
+					stmt = conn.createStatement();
+					String sql;
+					sql = String.format("select * from tb_log_analyze_conf where id = %d", id);
+					ResultSet rs = stmt.executeQuery(sql);
+					
+					if (rs.next()){
+						columnsStr = rs.getString("columns");
+						regexStr = rs.getString("regex");
+						initFailed = false;
+					}
+					// 完成后关闭
+					rs.close();
+					stmt.close();
+					conn.close();
+					
+				}catch(SQLException se){
+					// 处理 JDBC 错误
+					se.printStackTrace();
+				}catch(Exception e){
+					// 处理 Class.forName 错误
+					e.printStackTrace();
+				}finally{
+					// 关闭资源
+					try{
+						if(stmt != null) stmt.close();
+					}catch(SQLException se2){
+					}// 什么都不做
+					try{
+						if(conn != null) conn.close();
+					}catch(SQLException se){
+						se.printStackTrace();
+					}
+				}
         }
 
         /**
@@ -21,19 +64,24 @@ public class Hive2JdbcClient {
          * @throws SQLException
          */
         public static void main(String[] args) throws SQLException {
+				//初始化
+				int mysqlId = 10000;
+				getColumnsRegex(mysqlId);
+				if (initFailed)
+				{
+					System.out.println("init failed !");
+					System.exit(1);
+				}
+				System.out.println("columnsStr: " + columnsStr);
+				System.out.println("regexStr: " + regexStr);
+			
+				String driverName = "org.apache.hive.jdbc.HiveDriver";
                 try {
-                        Class.forName(driverName);
+					Class.forName(driverName);
                 } catch (ClassNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        System.exit(1);
-                }
-                try {
-                        Class.forName(JDBC_DRIVER);
-                } catch (ClassNotFoundException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                        System.exit(1);
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.exit(1);
                 }
                 String[] colReg = getColumnsRegex();
                 //replace "hive" here with the name of the user the queries should run as
