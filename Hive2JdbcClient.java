@@ -83,7 +83,6 @@ public class Hive2JdbcClient {
 					e.printStackTrace();
 					System.exit(1);
                 }
-                String[] colReg = getColumnsRegex();
                 //replace "hive" here with the name of the user the queries should run as
                 Connection con = DriverManager.getConnection("jdbc:hive2://10.9.96.4:10000/default", "root", "ucdnred@cat;;");
                 Statement stmt = con.createStatement();
