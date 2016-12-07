@@ -111,12 +111,12 @@ public class Hive2JdbcClient {
                 Connection con = DriverManager.getConnection("jdbc:hive2://10.9.96.4:10000/default", "root", "ucdnred@cat;;");
                 Statement stmt = con.createStatement();
 
-                String curTimeStr = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date);
+                String curTimeStr = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                 System.out.println("curTimeStr: " + curTimeStr);
 
                 String tableName = "temp" + curTimeStr + dConf.domainName + "_" + dConf.fileTpye;
                 System.out.println("tableName: " + tableName);
-                
+
                 stmt.execute("drop table if exists " + tableName);
 
                 String logPath = "/hdtest/20161129/auc.tangdouimg.com/";
