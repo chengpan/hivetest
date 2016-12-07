@@ -114,7 +114,7 @@ public class Hive2JdbcClient {
                 String curTimeStr = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                 System.out.println("curTimeStr: " + curTimeStr);
 
-                String tableName = "temp" + curTimeStr + dConf.domainName.replaceAll('\\W', '_') + "_" + dConf.fileTpye;
+                String tableName = "temp" + curTimeStr + dConf.domainName.replaceAll("\\W", "_") + "_" + dConf.fileTpye;
                 System.out.println("tableName: " + tableName);
 
                 stmt.execute("drop table if exists " + tableName);
