@@ -120,8 +120,9 @@ public class Hive2JdbcClient {
                 stmt.execute("drop table if exists " + tableName);
 
                 String logPath = "/hdtest/20161129/auc.tangdouimg.com/";
-                String tableStr = String.format("create external table if not exists %s(%s)", tableName, columnsStr);
-                String serdeStr = String.format("ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe' WITH SERDEPROPERTIES ('input.regex' = '%s')", regexStr);
+                String tableStr = String.format("create external table if not exists %s(%s)", tableName, dConf.columns);
+                String serdeStr = String.format("ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'" +
+                								" WITH SERDEPROPERTIES ('input.regex' = '%s')", dConf.regex);
                 String locationStr = String.format("location '%s'", logPath);
                 String queryStr = tableStr + "\n" + serdeStr + "\n" + locationStr;
                 System.out.println(queryStr);
