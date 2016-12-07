@@ -114,13 +114,16 @@ public class Hive2JdbcClient {
                 String curTimeStr = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                 System.out.println("curTimeStr: " + curTimeStr);
 
-                String tableName = "temp" + curTimeStr + dConf.domainName + "_" + dConf.fileTpye;
+                String tableName = "temp" + curTimeStr +
+                					dConf.domainName.replaceAll('\\W', '_') +
+                					"_" + dConf.fileTpye;
                 System.out.println("tableName: " + tableName);
 
                 stmt.execute("drop table if exists " + tableName);
 
                 String logPath = "/hdtest/20161129/auc.tangdouimg.com/";
-                String tableStr = String.format("create external table if not exists %s(%s)", tableName, dConf.columns);
+                String tableStr = String.format("create external table if not exists %s(%s)",
+                								 tableName, dConf.columns);
                 String serdeStr = String.format("ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'" +
                 								" WITH SERDEPROPERTIES ('input.regex' = '%s')", dConf.regex);
                 String locationStr = String.format("location '%s'", logPath);
