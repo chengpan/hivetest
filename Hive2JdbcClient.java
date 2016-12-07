@@ -20,7 +20,7 @@ class DomainConf{
 		this.domainName = domainName;
 		this.fileTpye = fileTpye;
 		initFailed = true;
-		getColumnsRegex()
+		getColumnsRegex();
 	}
 	
 	private void getColumnsRegex()
