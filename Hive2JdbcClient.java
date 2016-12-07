@@ -13,7 +13,7 @@ class DomainConf{
 	int fileTpye;
 	String columns;
 	String regex;
-	private boolean initFailed;
+	boolean initFailed;
 	
 	public DomainConf(String domainName, int fileTpye)
 	{
