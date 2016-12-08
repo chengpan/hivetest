@@ -92,7 +92,7 @@ class RunTest{
             if(dConf.initFailed)
             {
             	System.out.println("get conf from mysql failed !");
-            	return
+            	return;
             }
 
             try
