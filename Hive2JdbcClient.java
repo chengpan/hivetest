@@ -7,6 +7,10 @@ import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.ArrayList;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class DomainConf{
 	String domainName;
@@ -72,6 +76,111 @@ class DomainConf{
 			}
 		}						
 	}
+}
+
+class DayLogInfo{
+	String domainName;
+	String logDate;
+	int fileTpye;
+	String hdfsDir;
+	public DayLogInfo(String domainName, String logDate, int fileTpye, String hdfsDir)
+	{
+		this.domainName = domainName;
+		this.logDate = logDate;
+		this.fileTpye = fileTpye;
+		this.hdfsDir = hdfsDir;
+	}
+}
+
+class LogProcess{
+	String targetLogDate; //必须提供正确值
+	String targetDomainName;//"all"表示所有域名
+	int targetFileTpye;//-1处理所有类型
+	
+	DayLogInfo[] dayLogInfoArr;//记录下要处理的所有的信息
+
+	public LogProcess(String targetLogDate, String targetDomainName, int targetFileTpye)
+	{
+		this.targetLogDate = targetLogDate;
+		this.targetDomainName = targetDomainName;
+		this.targetFileTpye = targetFileTpye;
+	}
+
+	void getDayLogInfo()
+	{
+		final String DB_URL = "jdbc:mysql://10.9.170.241:3306/ucdn";
+		final String USER = "root";
+		final String PASS = "ucdnred@cat;;";
+		Connection conn = null;
+		Statement stmt = null;
+		initFailed = true;
+		try{
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+			String sql;
+			sql = String.format("select domain_name, date(date_hour) as log_date, file_type, max(hdfs_path) as path" +
+								" from tb_hadoop_files where date(date_hour) = '%s'", targetLogDate)
+
+			if (targetDomainName.compareTo("all") != 0)
+			{
+				sql = sql + String.format(" and domain_name = '%s'", targetDomainName.replaceAll("\\\\", "\\\\\\\\").replaceAll("'", "\\\\'"))	
+			}
+
+			if (targetFileTpye >= 0)
+			{
+				sql = sql + " and file_type = " + targetFileTpye;
+			}
+
+			System.out.println("sql to get domain for one day: " + sql);
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			//提取dir的正则表达式
+			String pattern = "(.*)/([^/]+)";
+			Pattern r = Pattern.compile(pattern);
+
+			ArrayList arrList = new ArrayList();
+			while (rs.next()){
+				String tmpDomainName = rs.getString("domain_name");
+				String tmpLogDate = rs.getString("log_date");
+				String tmpPath = rs.getString("path");
+				int tmpFileType = rs.getInt("file_type");
+
+				//提取dir
+				Matcher m = r.matcher(tmpPath);
+				tmpPath = m.group(1);
+
+				DayLogInfo tmpDayLogInfo = new DayLogInfo(tmpDomainName, tmpLogDate, tmpFileType, tmpPath);
+				arrList.add(tmpDayLogInfo);
+
+			}
+
+			dayLogInfoArr = (DayLogInfo[])arrList.toArray();
+			// 完成后关闭
+			rs.close();
+			stmt.close();
+			conn.close();
+		}catch(SQLException se){
+			// 处理 JDBC 错误
+			se.printStackTrace();
+		}catch(Exception e){
+			// 处理 Class.forName 错误
+			e.printStackTrace();
+		}finally{
+			// 关闭资源
+			try{
+				if(stmt != null) stmt.close();
+			}catch(SQLException se2){
+			}// 什么都不做
+			try{
+				if(conn != null) conn.close();
+			}catch(SQLException se){
+				se.printStackTrace();
+			}
+		}			
+	}
+
+
+
 }
 
 class RunTest{
