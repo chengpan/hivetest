@@ -95,10 +95,13 @@ class RunTest{
             	return;
             }
 
+            Connection con;
+            Statement stmt;
+            ResultSet res;
             try
             {
-                Connection con = DriverManager.getConnection("jdbc:hive2://10.9.96.4:10000/default", "root", "ucdnred@cat;;");
-                Statement stmt = con.createStatement();
+                con = DriverManager.getConnection("jdbc:hive2://10.9.96.4:10000/default", "root", "ucdnred@cat;;");
+                stmt = con.createStatement();
 
                 String curTimeStr = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                 System.out.println("curTimeStr: " + curTimeStr);
@@ -119,7 +122,7 @@ class RunTest{
                 // show tables
                 String sql = "show tables '" + tableName + "'";
                 System.out.println("Running: " + sql);
-                ResultSet res = stmt.executeQuery(sql);
+               	res = stmt.executeQuery(sql);
                 if (res.next()) {
                         System.out.println(res.getString(1));
                 }
