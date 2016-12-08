@@ -95,9 +95,9 @@ class RunTest{
             	return;
             }
 
-            Connection con;
-            Statement stmt;
-            ResultSet res;
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet res  = null;
             try
             {
                 con = DriverManager.getConnection("jdbc:hive2://10.9.96.4:10000/default", "root", "ucdnred@cat;;");
