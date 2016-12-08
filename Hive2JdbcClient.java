@@ -153,7 +153,7 @@ class RunTest{
                         System.out.printf("http_ver          : %s\n", res.getString("http_ver"));
                         System.out.printf("hit_status        : %s\n", res.getString("hit_status"));
                         System.out.printf("http_status       : %d\n", res.getInt("http_status"));
-                        System.out.printf("bytes_with_hdr    : %ld\n", res.getLong("bytes_with_hdr"));
+                        System.out.printf("bytes_with_hdr    : %s\n", res.getString("bytes_with_hdr"));
                         System.out.printf("resp_delay        : %d\n", res.getInt("resp_delay"));
                         System.out.printf("host_name         : %s\n", res.getString("host_name"));
                         System.out.printf("referer           : %s\n", res.getString("referer"));
