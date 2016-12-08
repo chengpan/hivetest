@@ -119,11 +119,11 @@ class LogProcess{
 			stmt = conn.createStatement();
 			String sql;
 			sql = String.format("select domain_name, date(date_hour) as log_date, file_type, max(hdfs_path) as path" +
-								" from tb_hadoop_files where date(date_hour) = '%s'", targetLogDate)
+								" from tb_hadoop_files where date(date_hour) = '%s'", targetLogDate);
 
 			if (targetDomainName.compareTo("all") != 0)
 			{
-				sql = sql + String.format(" and domain_name = '%s'", targetDomainName.replaceAll("\\\\", "\\\\\\\\").replaceAll("'", "\\\\'"))	
+				sql = sql + String.format(" and domain_name = '%s'", targetDomainName.replaceAll("\\\\", "\\\\\\\\").replaceAll("'", "\\\\'"));	
 			}
 
 			if (targetFileTpye >= 0)
