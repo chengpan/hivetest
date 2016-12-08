@@ -234,11 +234,17 @@ public class Hive2JdbcClient {
 					System.exit(1);
                 }
 
+                /*
                 RunTest testSmall = new RunTest("dh5.kimg.cn", 0, "/logs/20161207/dh5.kimg.cn");
                 testSmall.run();
 
                 RunTest testBig = new RunTest("auc.tangdou.com", 1, "/logs/20161207/auc.tangdou.com");
-                testBig.run();               
+                testBig.run();   
+                */
+               
+                SimpleDateFormat sdFmt = new SimpleDateFormat("yyyy-MM-dd")
+                String yesterdayStr = sdFmt.format(new Date(System.currentTimeMillis() - 1000*60*60*24));
+                println("yesterday: " + yesterdayStr);
 
         }
 }
