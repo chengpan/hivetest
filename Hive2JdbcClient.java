@@ -244,7 +244,7 @@ public class Hive2JdbcClient {
                
                 SimpleDateFormat sdFmt = new SimpleDateFormat("yyyy-MM-dd");
                 String yesterdayStr = sdFmt.format(new Date(System.currentTimeMillis() - 1000*60*60*24));
-                println("yesterday: " + yesterdayStr);
+                System.out.println("yesterday: " + yesterdayStr);
 
         }
 }
