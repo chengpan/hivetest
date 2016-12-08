@@ -113,7 +113,6 @@ class LogProcess{
 		final String PASS = "ucdnred@cat;;";
 		Connection conn = null;
 		Statement stmt = null;
-		initFailed = true;
 		try{
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = conn.createStatement();
