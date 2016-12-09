@@ -367,5 +367,7 @@ public class Hive2JdbcClient {
                 String yesterdayStr = sdFmt.format(new Date(System.currentTimeMillis() - 1000*60*60*24));
                 System.out.println("yesterday: " + yesterdayStr);
 
+                LogProcess lp = new LogProcess(yesterdayStr, "all", -1);
+                lp.logAnalyze();
         }
 }
