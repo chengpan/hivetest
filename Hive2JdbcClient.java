@@ -137,7 +137,7 @@ class LogProcess{
 			String pattern = "(.*)/([^/]+)";
 			Pattern r = Pattern.compile(pattern);
 
-			ArrayList arrList = new ArrayList();
+			ArrayList<DayLogInfo> arrList = new ArrayList<DayLogInfo>();
 			while (rs.next()){
 				String tmpDomainName = rs.getString("domain_name");
 				String tmpLogDate = rs.getString("log_date");
