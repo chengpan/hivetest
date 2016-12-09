@@ -143,7 +143,7 @@ class LogProcess{
 				sql = sql + " and file_type = " + targetFileTpye;
 			}
 
-			sql = sql + " group by domain_name, log_date, file_type order by domain_name, file_type"
+			sql = sql + " group by domain_name, log_date, file_type order by domain_name, file_type";
 
 			System.out.println("sql to get domain for one day: " + sql);
 			ResultSet rs = stmt.executeQuery(sql);
