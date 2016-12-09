@@ -104,12 +104,13 @@ class LogProcess{
 		this.targetLogDate = targetLogDate;
 		this.targetDomainName = targetDomainName;
 		this.targetFileTpye = targetFileTpye;
+		dayLogInfoArr = new DayLogInfo[1];
 	}
 
 	void logAnalyze()
 	{
 		getDayLogInfo();
-		for (int i = 0; i < dayLogInfoArr.length; i++)
+		for (int i = 0; i < dayLogInfoArr.length && dayLogInfoArr[i] != null; i++)
 		{
 			System.out.println("\n" + i + " :");
 			System.out.println("domainName     : " + dayLogInfoArr[i].domainName);
