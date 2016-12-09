@@ -106,7 +106,20 @@ class LogProcess{
 		this.targetFileTpye = targetFileTpye;
 	}
 
-	void getDayLogInfo()
+	void logAnalyze()
+	{
+		getDayLogInfo();
+		for (int i = 0; i < dayLogInfoArr.length; i++)
+		{
+			System.out.println("\n" + i + " :");
+			System.out.println("domainName     : " + dayLogInfoArr[i].domainName);
+			System.out.println("logDate     : " + dayLogInfoArr[i].logDate);
+			System.out.println("fileTpye     : " + dayLogInfoArr[i].fileTpye);
+			System.out.println("hdfsDir     : " + dayLogInfoArr[i].hdfsDir);
+		}
+	}
+
+	private void getDayLogInfo()
 	{
 		final String DB_URL = "jdbc:mysql://10.9.170.241:3306/ucdn";
 		final String USER = "root";
@@ -153,7 +166,7 @@ class LogProcess{
 
 			}
 
-			dayLogInfoArr = (DayLogInfo[])arrList.toArray();
+			dayLogInfoArr = arrList.toArray();
 			// 完成后关闭
 			rs.close();
 			stmt.close();
