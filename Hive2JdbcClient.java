@@ -148,10 +148,6 @@ class LogProcess{
 			System.out.println("sql to get domain for one day: " + sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			//提取dir的正则表达式
-			String pattern = "(.*)/([^/]+)";
-			Pattern r = Pattern.compile(pattern);
-
 			ArrayList<DayLogInfo> arrList = new ArrayList<DayLogInfo>();
 			while (rs.next()){
 				String tmpDomainName = rs.getString("domain_name");
@@ -160,8 +156,17 @@ class LogProcess{
 				int tmpFileType = rs.getInt("file_type");
 
 				//提取dir
+				String pattern = "(.*)/([^/]+)";
+				Pattern r = Pattern.compile(pattern);			
 				Matcher m = r.matcher(tmpPath);
-				tmpPath = m.group(1);
+				if (m.find())
+				{
+					tmpPath = m.group(1);
+				}
+				else
+				{
+					System.out.println("path not match : " + tmpPath);
+				}
 
 				DayLogInfo tmpDayLogInfo = new DayLogInfo(tmpDomainName, tmpLogDate, tmpFileType, tmpPath);
 				arrList.add(tmpDayLogInfo);
