@@ -166,7 +166,7 @@ class LogProcess{
 
 			}
 
-			dayLogInfoArr = arrList.toArray();
+			dayLogInfoArr = (DayLogInfo[]) arrList.toArray();
 			// 完成后关闭
 			rs.close();
 			stmt.close();
