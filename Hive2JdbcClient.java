@@ -162,6 +162,7 @@ class LogProcess{
 				if (m.find())
 				{
 					tmpPath = m.group(1);
+					System.out.println("dir : " + tmpPath);
 				}
 				else
 				{
@@ -173,7 +174,7 @@ class LogProcess{
 
 			}
 
-			dayLogInfoArr = (DayLogInfo[]) arrList.toArray();
+			dayLogInfoArr = arrList.toArray(dayLogInfoArr);
 			// 完成后关闭
 			rs.close();
 			stmt.close();
